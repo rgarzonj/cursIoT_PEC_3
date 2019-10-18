@@ -1,40 +1,49 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-char *tmpnam(char *s);
-FILE *tmpfile(void);
+#define EXPECTED_NUM_ARGS 2
 
-#define EXPECTED_NUM_ARGS 3
-
-
+char *help_str = "ERROR: Incorrect number of arguments.\n\nNAME\n\tfilereader - Read and print contents of a file.\nSYNOPSIS\n\tfilereader nameofthefile.txt\n\n";
 
 int main(int argc, char **argv)
 {
-    if( argc == EXPECTED_NUM_ARGS ) {
-      printf("The argument supplied is %s\n", argv[1]);
-   }
-   else if( argc > EXPECTED_NUM_ARGS ) {
-      printf("Too many arguments supplied.\n");
-   }
-   else {
-      printf("One argument expected.\n");
-   }
-
-for (int i = 1; i < argc; i++)
-{  
-    if (i + 1 != argc)
+    //Checking input parameters
+    char *fileName;
+    if (argc == EXPECTED_NUM_ARGS)
     {
-        if (strcmp(argv[i], "-filename") == 0) // This is your parameter name
-        {                 
-            char* filename = argv[i + 1];    // The next value in the array is your value
-            i++;    // Move to the next flag
-        }
+        printf("Reading file %s\n", argv[1]);
+        printf("***************************\n\n");
     }
-}
-
-    for (int i = 0; i < argc; ++i)
+    else if (argc > EXPECTED_NUM_ARGS)
     {
-        printf("argv[%d]: %s\n", i, argv[i]);
+        //Show help in case of incorrect parameters
+        printf("%s", help_str);
+        exit(EXIT_FAILURE);
     }
+    else
+    {
+        //Show help in case of incorrect parameters
+        printf("%s", help_str);
+        exit(EXIT_FAILURE);
+    }
+    //Try to open the file
+    int num;
+    FILE *fptr;
+    if ((fptr = fopen(argv[1], "r")) == NULL)
+    {
+        printf("ERROR: File could not be opened.");
+        // Program exits if the file pointer returns NULL.
+        exit(EXIT_FAILURE);
+    }
+    //Read the file and print the contents.
+    char *line = NULL;
+    size_t len = 0;
+    ssize_t read;
+    while ((read = getline(&line, &len, fptr)) != -1)
+    {
+        printf("%s", line);
+    }
+    fclose(fptr);
+    return EXIT_SUCCESS;
 }
-
-
