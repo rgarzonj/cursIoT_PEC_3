@@ -6,10 +6,9 @@
 
 char *help_str = "ERROR: Incorrect number of arguments.\n\nNAME\n\tfilereader - Read and print contents of a file.\nSYNOPSIS\n\tfilereader nameofthefile.txt\n\n";
 
-int main(int argc, char **argv)
+char *readInputFileName(int argc, char **argv)
 {
     //Checking input parameters
-    char *fileName;
     if (argc == EXPECTED_NUM_ARGS)
     {
         printf("Reading file %s\n", argv[1]);
@@ -27,10 +26,15 @@ int main(int argc, char **argv)
         printf("%s", help_str);
         exit(EXIT_FAILURE);
     }
+    return (argv[1]);
+}
+
+int main(int argc, char **argv)
+{
+    
     //Try to open the file
-    int num;
     FILE *fptr;
-    if ((fptr = fopen(argv[1], "r")) == NULL)
+    if ((fptr = fopen(readInputFileName(argc, argv), "r")) == NULL)
     {
         printf("ERROR: File could not be opened.\n");
         // Program exits if the file pointer returns NULL.
