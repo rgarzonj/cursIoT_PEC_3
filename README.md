@@ -15,10 +15,11 @@ Implementación en C++
 
 - Activity_1/cpp/filereader.c : Código c++ para la entrega
 - Activity_1/cpp/Makefile
+- Activity_1/cpp/small.txt : fichero para pruebas
 
 Cómo utilizar el fichero ya compilado:
 
-`filereader small.txt
+`filereader small.txt`
 
 ## Actividad 2
 
