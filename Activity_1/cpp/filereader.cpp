@@ -1,5 +1,8 @@
 #include <iostream>
 #include <string>
+#include <fstream>
+
+using namespace std;
 
 #define EXPECTED_NUM_ARGS 2
 
@@ -8,36 +11,45 @@ std::string help_str = "ERROR: Incorrect number of arguments.\n\nNAME\n\tfilerea
 //Create a helper class to parse the input arguments and read the file name.
 
 class ArgumentParser
-{ // The class
+{ // Parses input arguments and assigns the first argument as the fileName
 private:
-    std::string _fileName = "";
+    string _fileName = "";
+    int _argc;
+    char **_argv;
 
-public:                                   // Access specifier
-    ArgumentParser(int argc, char **argv) // Constructor
+public:
+    // Constructor
+    ArgumentParser(int argc, char **argv)
+    {
+        _argc = argc;
+        _argv = argv;
+    }
+
+    void ParseArguments()
     {
         //Checking input parameters
         char *fileName;
-        if (argc == EXPECTED_NUM_ARGS)
+        if (_argc == EXPECTED_NUM_ARGS)
         {
-            std::cout << "Reading file " << argv[1] << "\n";
-            std::cout << "***************************\n\n";
+            cout << "Reading file " << _argv[1] << "\n";
+            cout << "***************************\n\n";
         }
-        else if (argc > EXPECTED_NUM_ARGS)
+        else if (_argc > EXPECTED_NUM_ARGS)
         {
             //Show help in case of incorrect parameters
-            std::cout << help_str;
+            cout << help_str;
             exit(EXIT_FAILURE);
         }
         else
         {
             //Show help in case of incorrect parameters
-            std::cout << help_str;
+            cout << help_str;
             exit(EXIT_FAILURE);
         }
-        fileName = argv[1];
+        _fileName = _argv[1];
     }
-
-    std::string getFileName()
+    //Public method to access private variable
+    string getFileName()
     {
         return (_fileName);
     }
@@ -46,27 +58,29 @@ public:                                   // Access specifier
 int main(int argc, char **argv)
 {
     ArgumentParser parser(argc, argv);
+    parser.ParseArguments();
     //Checking input parameters
-    std::string fileName;
+    string fileName;
     fileName = parser.getFileName();
 
     //Try to open the file
-    int num;
-    FILE *fptr;
-    if ((fptr = fopen(argv[1], "r")) == NULL)
+    ifstream myReadFile;
+    string buffer;
+    myReadFile.open(fileName);
+    if (myReadFile.is_open())
     {
-        std::cout << "ERROR: File could not be opened.\n";
+        while(!myReadFile.eof()) // To get you all the lines.
+        {
+	        getline(myReadFile,buffer); // Saves the line in STRING.
+	        cout<<buffer << endl; // Prints our STRING.
+        }
+        myReadFile.close();
+    }
+    else
+    {
+        cout << "ERROR: File could not be opened.\n";
         // Program exits if the file pointer returns NULL.
         exit(EXIT_FAILURE);
     }
-    //Read the file and print the contents.
-    char *line = NULL;
-    size_t len = 0;
-    ssize_t read;
-    while ((read = getline(&line, &len, fptr)) != -1)
-    {
-        std::cout << line;
-    }
-    fclose(fptr);
     return EXIT_SUCCESS;
 }
