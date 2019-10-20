@@ -17,7 +17,8 @@ Implementación en C++
 - Activity_1/cpp/Makefile
 
 Cómo utilizar el fichero ya compilado:
-filereader <nombre del fichero>
+
+`filereader small.txt
 
 ## Actividad 2
 
