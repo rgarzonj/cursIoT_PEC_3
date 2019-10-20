@@ -32,7 +32,7 @@ int main(int argc, char **argv)
     FILE *fptr;
     if ((fptr = fopen(argv[1], "r")) == NULL)
     {
-        printf("ERROR: File could not be opened.");
+        printf("ERROR: File could not be opened.\n");
         // Program exits if the file pointer returns NULL.
         exit(EXIT_FAILURE);
     }
